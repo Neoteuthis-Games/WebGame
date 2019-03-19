@@ -1,6 +1,14 @@
 (function($) {
   "use strict"; // Start of use strict
 
+var audio = document.getElementById("myaudio");    
+document.onkeydown = function(e) {       
+if (e.keyCode == 83) {           
+audio.pause(); // Key pressed was S        
+} else if (e.keyCode == 80) {            audio.play(); 
+// Key pressed was P    
+}    };
+
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
