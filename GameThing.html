@@ -1,5 +1,22 @@
-<HTML>
-<canvas id="mycanvas"></canvas> <script>    var canvas = document.getElementById("mycanvas"),        ctx = canvas.getContext("2d");
+<!DOCTYPE HTML> 
+<html lang="en-US"> 
+<head>   
+<meta charset="UTF-8">   
+<title>TOPDOWNSURVIVALGAME</title> </head> 
+<body>    
+
+<div id="game">        
+<div class="screen" id="splash-screen"></div>        
+<div class="screen" id="main-menu"></div>       
+<div class="screen" id="game-screen"></div>        
+<div class="screen" id="high-scores"></div>   
+
+</div> 
+<canvas id="mycanvas">
+
+</canvas>
+
+<script>    var canvas = document.getElementById("mycanvas"),        ctx = canvas.getContext("2d");
  
     canvas.width = canvas.height = 200;
  
@@ -11,12 +28,23 @@
  
     // draw a green semi-circle    
 	ctx.strokeStyle = "green";    ctx.beginPath();    ctx.scale(1, 0.5);    ctx.arc(100, 300, 75, Math.PI, 0, true);    ctx.closePath();    ctx.stroke(); 
+	// save highscore data 
+	localStorage.setItem("highscore", "152400");
+ 
+// data can later be retrieved, even on other pages 
+var highscore = localStorage.getItem("highscore");
+ 
+alert(highscore); // alerts 154200
 	</script>
+
 	<button class="btn success">Success</button>
 <button class="btn info">Info</button>
 <button class="btn warning">Warning</button>
 <button class="btn danger">Danger</button>
 <button class="btn default">Default</button>
+
 </canvas>
- <script src="js/basescript.js"></script><link href="css/style.css" rel="stylesheet">
+ </body> 
+ <script src="js/basescript.js"></script>
+<link href="css/style.css" rel="stylesheet">
 </HTML>
