@@ -1,36 +1,60 @@
-(function($) {
-  "use strict"; // Start of use strict
+var jewel = (function() { 
+var scriptQueue = [],        
+numResourcesLoaded = 0,        
+numResources = 0,        
+executeRunning = false;
 
-var audio = document.getElementById("myaudio");    
-document.onkeydown = function(e) {       
-if (e.keyCode == 83) {           
-audio.pause(); // Key pressed was S        
-} else if (e.keyCode == 80) {            audio.play(); 
-// Key pressed was P    
-}    };
+  function executeScriptQueue() {  
+ var next = scriptQueue[0],            
+first, script;       
+ if (next && next.loaded) {            
+executeRunning = true;            
+// remove the first element in the queue            
+scriptQueue.shift();            
+first = document.getElementsByTagName("script")[0];            
+script = document.createElement("script");            
+script.onload = function() {                
+if (next.callback) {                    
+next.callback();                
+}                // try to execute more scripts
+        executeScriptQueue();            
+};            
+script.src = next.src;            
+first.parentNode.insertBefore(script, first);        
+} else {            
+executeRunning = false;        
+}    
+  
+}
 
-  // Smooth scrolling using jQuery easing
-  $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
-    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      if (target.length) {
-        $('html, body').animate({
-          scrollTop: (target.offset().top)
-        }, 1000, "easeInOutExpo");
-        return false;
-      }
-    }
-  });
+function load(src, callback) {     
+var image, queueEntry;        
+numResources++;
+ 
+// add this resource to the execution queue        
+queueEntry = {            
+src: src,            
+callback: callback,           
+ loaded: false       
+ };        
+scriptQueue.push(queueEntry);
+ 
+image = new Image();        
+image.onload = image.onerror = function() {            
+numResourcesLoaded++;  
+}        
+queueEntry.loaded = true;            
+if (!executeRunning) {                
+executeScriptQueue();            
+}       
+ };       
+ image.src = src;    
+}
 
-  // Closes responsive menu when a scroll trigger link is clicked
-  $('.js-scroll-trigger').click(function() {
-    $('.navbar-collapse').collapse('hide');
-  });
+function setup() {   }
 
-  // Activate scrollspy to add active class to navbar items on scroll
-  $('body').scrollspy({
-    target: '#sideNav'
-  });
-
-})(jQuery); // End of use strict
+    return {      
+  load: load,       
+ setup: setup    
+};
+ })(); 
