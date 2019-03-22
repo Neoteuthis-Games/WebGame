@@ -9,9 +9,12 @@
 	<title>Fool of Neotience</title>
 </head>
 <body>
-
+	<img src="images/title.png">
 	<div id="game">
-		<div class="screen" id="splash-screen"></div>
+		<div class="screen" id="splash-screen">            
+		<h1 class="logo">Jewel <br />Warrior</h1>            
+		<span class="continue">Click to continue</span>        
+		</div>
 		<div class="screen" id="main-menu"></div>
 		<div class="screen" id="game-screen"></div>
 		<div class="screen" id="high-scores"></div>
@@ -26,10 +29,11 @@
 	<button class="btn warning">Warning</button>
 	<button class="btn danger">Danger</button>
 	<button class="btn default">Default</button>
+	<script>window.addEventListener("load", function () { basescript.load("js/dom.js", basescript.setup); });</script>
+	<script src="js/basescript.js">
+		basescript.load("js/dom.js");
+	</script>
 
+	<link href="css/style.css" rel="stylesheet">
 </body>
-
 </html>
-<script src="js/basescript.js"></script>
-<script>window.addEventListener("load", function () { basescript.load("scripts/dom.js", basescript.setup); });</script>
-<link href="css/style.css" rel="stylesheet">
