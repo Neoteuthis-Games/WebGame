@@ -16,8 +16,8 @@ body {
     left: 0;
     top: 0;
     font-size: 40px;
-    width: 12em;
-    height: 18em;
+    width: 8.8em;
+    height: 13.2em;
     font-family: Geo;
     color: rgb(200, 200, 100);
     background-color: rgb(60, 60, 40);
@@ -74,7 +74,7 @@ body {
 }
 
 .logo {
-    font-size: 1.5em;
+    font-size: 1em;
     line-height: 0.9em;
     text-shadow: 0.03em 0.03em 0.03em rgb(255, 255, 0),
         -0.03em -0.03em 0.03em rgb(255, 255, 0),
@@ -82,7 +82,7 @@ body {
     font-family: Slackey;
     margin: 0;
     text-align: center;
-    color: rgb(70, 120, 20);
+    color: #666444;
 }
 
 /* Main menu styles */
