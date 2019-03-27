@@ -6,6 +6,13 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <script src="scripts/jquery-3.3.1.js"></script>
+    <script src="scripts/map.js"></script>
+    <script src="scripts/phaser.js"></script>
+    <script src=”scripts/noisejs-master/perlin.js”></script>
+    <!-- These three will be absorbed, just following a tutorial to figure out Phaser. -->
+    <script src=”scripts/Entities.js”></script>
+    <script src=”scripts/SceneMain.js”></script>
+    <script src=”scripts/game.js”></script>
     <script>
         $(function () {
             $("#includedContent").load("GameThing.html");
@@ -57,6 +64,7 @@
     </script>
 </head>
 <body style="background-color:#2200CC">
+    <div id="indicator"></div>
     <div id="game">
         <div class="screen" id="splash-screen">
             <h1 class="logo">The Fool <br />Of Neotience</h1>
