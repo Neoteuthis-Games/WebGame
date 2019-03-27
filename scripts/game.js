@@ -10,7 +10,7 @@ var config = {
         }
     },
     scene: [
-        SceneMain
+        screen.game
     ],
     pixelArt: true,
     roundPixels: true

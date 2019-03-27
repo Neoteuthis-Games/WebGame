@@ -9,9 +9,8 @@
     <script src="scripts/map.js"></script>
     <script src="scripts/phaser.js"></script>
     <script src=”scripts/noisejs-master/perlin.js”></script>
-    <!-- These three will be absorbed, just following a tutorial to figure out Phaser. -->
     <script src=”scripts/Entities.js”></script>
-    <script src=”scripts/SceneMain.js”></script>
+    <script src=”scripts/screen.main.js”></script>
     <script src=”scripts/game.js”></script>
     <script>
         $(function () {
@@ -84,8 +83,8 @@
                 <li><button name="game-screen" class="success">Play</button>
                 <li><button name="high-scores" class="info">Highscore</button>
                 <li><button name="about" class="warning">About</button>
-                <li><button class="danger" name="exit-screen">Exit</button>
-                <li><button onclick="GameThing.HTML">DO NOT PRESS</button>
+                <li><button class="screen.game" name="exit-screen">Exit</button>
+                <li><button onclick="SceneMain.preload();">DO NOT PRESS</button>
             </ul>
         </div>
         <div class="screen" id="game-screen"></div>

@@ -1,6 +1,6 @@
 class SceneMain extends Phaser.Scene {
 constructor() {
-    super({ key: “SceneMain” });
+    super({ key: “screen.game” });
 }
 preload() {
 this.load.spritesheet(“sprWater”, “images/sprWater.png”, {
