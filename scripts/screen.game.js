@@ -1,19 +1,19 @@
 class SceneMain extends Phaser.Scene {
 constructor() {
-    super({ key: “screen.game” });
+    super({ key: "screen.game" });
 }
 preload() {
-this.load.spritesheet(“sprWater”, “images/sprWater.png”, {
+this.load.spritesheet("sprWater", "images/sprWater.png", {
     frameWidth: 16,
     frameHeight: 16
 });
-this.load.image(“sprSand”, “images/sprSand.png”);
-this.load.image(“sprGrass”, “images/sprGrass.png”);
+this.load.image("sprSand", "images/sprSand.png");
+this.load.image("sprGrass", "images/sprGrass.png");
 }
 create() {
 this.anims.create({
-    key: “sprWater”,
-    frames: this.anims.generateFrameNumbers(“sprWater”),
+    key: "sprWater",
+    frames: this.anims.generateFrameNumbers("sprWater"),
     frameRate: 5,
     repeat: -1
 });

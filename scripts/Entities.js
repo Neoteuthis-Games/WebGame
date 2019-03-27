@@ -17,20 +17,20 @@ load() {
 var tileX = (this.x * (this.scene.chunkSize * this.scene.tileSize)) + (x * this.scene.tileSize);
 var tileY = (this.y * (this.scene.chunkSize * this.scene.tileSize)) + (y * this.scene.tileSize);
 var perlinValue = noise.perlin2(tileX / 100, tileY / 100);
-var key = “”;
-var animationKey = “”;
+var key = "";
+var animationKey = "";
 if (perlinValue < 0.2) {
-    key = “sprWater”;
-    animationKey = “sprWater”;
+    key = "sprWater";
+    animationKey = "sprWater";
 }
 else if (perlinValue >= 0.2 && perlinValue < 0.3) {
-    key = “sprSand”;
+    key = "sprSand";
 }
 else if (perlinValue >= 0.3) {
-    key = “sprGrass”;
+    key = "sprGrass";
 }
 var tile = new Tile(this.scene, tileX, tileY, key);
-if (animationKey !== “”) {
+if (animationKey !== "") {
     tile.play(animationKey);
 }
 this.tiles.add(tile);
