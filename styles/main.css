@@ -85,6 +85,17 @@ body {
     color: #666444;
 }
 
+#game-title {
+    font-size: 2em;
+    line-height: 1.8em;
+    text-shadow: 0.03em 0.03em 0.03em rgb(255, 255, 0),
+        -0.03em -0.03em 0.03em rgb(255, 255, 0),
+        0.10em 0.15em 0.15em rgb(0, 0, 0);
+    font-family: Slackey;
+    margin: 0;
+    text-align: center;
+    color: #666444;}
+
 /* Main menu styles */
 #main-menu {
     padding-top: 1em;
