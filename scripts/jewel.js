@@ -104,8 +104,24 @@ var jewel = (function() {
             showScreen("install-screen");
         }
     }
-
+    
+    function preload(src) {
+        var image = new Image();
+        image.src = src;
+    }
+    
+    function hasWebWorkers() {
+        return ("Worker" in window);
+    }
+    
+    function getLoadProgress() {
+        return numResourcesLoaded / numResources;
+    }
+    
     return {
+        getLoadProgress: getLoadProgress,
+        preload: preload,
+        hasWebWorkers: hasWebWorkers,
         isStandalone: isStandalone,
         load: load,
         setup: setup,

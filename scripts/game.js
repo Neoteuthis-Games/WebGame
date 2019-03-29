@@ -10,9 +10,10 @@ var config = {
         }
     },
     scene: [
-        screen.game
+        SceneMain
     ],
     pixelArt: true,
     roundPixels: true
 };
+
 var game = new Phaser.Game(config);

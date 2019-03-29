@@ -5,7 +5,7 @@ jewel.board = (function() {
         rows,
         baseScore,
         numJewelTypes;
-
+    
     function initialize(callback) {
         settings = jewel.settings;
         numJewelTypes = settings.numJewelTypes;
