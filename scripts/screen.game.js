@@ -3,6 +3,7 @@ jewel.screens["game-screen"] = (function () {
         paused;
 
     function startGame() {
+        SceneMain.js
         var board = jewel.board,
             display = jewel.display;
         board.initialize(function () {
