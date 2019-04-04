@@ -45,7 +45,7 @@ h3 {
   font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   }
 
-  #game {    ...    background-color: rgb(60,60,40);                  transparent 50%, rgb(20,20,20) 75%, transparent 100%        ); }
+  #game {    ...    background-color: #00CC00;                  transparent 50%, rgb(20,20,20) 75%, transparent 100%        ); }
 
  
 #game .screen {    position : absolute;    width : 100%;    height : 100%;    display : none;    z-index : 10; }
