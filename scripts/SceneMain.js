@@ -6,21 +6,21 @@ class SceneMain extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet("sprWater", "images/sprWater.png", {
-            frameWidth: 16,
-            frameHeight: 16
-        });
+      //  this.load.spritesheet("sprWater", "images/sprWater.png", {
+      ///      frameWidth: 16,
+       //     frameHeight: 16
+      //  });
         this.load.image("sprSand", "images/sprSand.png");
         this.load.image("sprGrass", "images/sprGrass.png");
     }
 
     create() {
-        this.anims.create({
-            key: "sprWater",
-            frames: this.anims.generateFrameNumbers("sprWater"),
-            frameRate: 5,
-            repeat: -1
-        });
+        //this.anims.create({
+           // key: "sprWater",
+            //frames: this.anims.generateFrameNumbers("sprWater"),
+           // frameRate: 5,
+           // repeat: -1
+     //   });
 
         this.chunkSize = 16;
         this.tileSize = 16;
