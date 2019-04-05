@@ -29,13 +29,13 @@ class Chunk {
                     var key = "";
                     var animationKey = "";
 
-                    if (perlinValue < 0.2) {
-                        key = "sprWater";
-                        animationKey = "sprWater";
-                    } else if (perlinValue >= 0.2 && perlinValue < 0.3) {
-                        key = "sprSand";
-                    } else if (perlinValue >= 0.3) {
+                    if (perlinValue < 0.3) {
                         key = "sprGrass";
+                       // animationKey = "sprWater";
+                    //}// else if (perlinValue >= 0.2 && perlinValue < 0.3) {
+                      //  key = "sprSand";
+                    } else if (perlinValue >= 0.3) {
+                        key = "sprSand";
                     }
 
                     var tile = new Tile(this.scene, tileX, tileY, key);
