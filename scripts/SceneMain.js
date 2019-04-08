@@ -4,7 +4,7 @@ class SceneMain extends Phaser.Scene {
             key: "SceneMain"
         });
     }
-
+   
     preload() {
       //  this.load.spritesheet("sprWater", "images/sprWater.png", {
       ///      frameWidth: 16,
@@ -12,6 +12,7 @@ class SceneMain extends Phaser.Scene {
       //  });
         this.load.image("sprSand", "images/sprSand.png");
         this.load.image("sprGrass", "images/sprGrass.png");
+        this.load.image("soldier", "images/char/char.png");
     }
 
     create() {
@@ -21,7 +22,7 @@ class SceneMain extends Phaser.Scene {
            // frameRate: 5,
            // repeat: -1
      //   });
-
+        var player = this.add.sprite(200, 200, 1, "soldier");
         this.chunkSize = 16;
         this.tileSize = 16;
         this.cameraSpeed = 10;
