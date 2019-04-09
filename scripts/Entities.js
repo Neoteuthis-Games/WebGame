@@ -17,6 +17,7 @@ class Chunk {
 
     load() {
         if (!this.isLoaded) {
+            //var player = SceneMain.add.sprite(200, 200, "soldier");
             for (var x = 0; x < this.scene.chunkSize; x++) {
                 for (var y = 0; y < this.scene.chunkSize; y++) {
 
