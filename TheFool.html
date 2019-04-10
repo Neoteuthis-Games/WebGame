@@ -26,25 +26,28 @@
     <script src="scripts/SceneMain.js"> </script>
     <script src="scripts/game.js"> </script> 
     <script src="scripts/map.js"></script>
+   
     
 </head>
-<body onload="onLoad()">
+<body onload="onLoad()" style="background-color:#2200CC">
 <img src="images/char/char.png" id="soldier" width="32" height="32">
 <script>
-var Player;// = this.add.sprite(200, 200, "soldier");
+    //contents of playerscript, but doesn't work as an external script...
+var Player;
 
 function onLoad() {
     Player = new component(30, 30, "#00CC00", 225, 225,"images/char/char.png");
-    //_root.load.image("soldier", "images/char/char.png");
+   // _root.load.image("soldier", "images/char/char.png");
+    //this.add.sprite(200, 200, "soldier");
     _root.start();
 }
-//its the root, not actually a var!!
+//not a var, but a sandbox for our game to exist in
 var _root = {
     canvas : document.createElement("canvas"),
     start : function() {
         //var playerSprite = this.add.sprite(200, 200, 1, "soldier");
-        this.canvas.width = 480;
-        this.canvas.height = 270;
+        this.canvas.width = 800;
+        this.canvas.height = 600;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -67,7 +70,6 @@ var _root = {
 }
 
 function component(width, height, color, x, y, type) {
-
     this.type = type;
     this.width = width;
     this.height = height;
@@ -98,14 +100,14 @@ function onEnterframe() {
     _root.clear();
     Player.moveAngle = 0;
     Player.speed = 0;
-    //set to arrow keys for now, but can be adapted to wasd
-    if (_root.keys && _root.keys[37]) {Player.moveAngle = -1; }
-    if (_root.keys && _root.keys[39]) {Player.moveAngle = 1; }
-    if (_root.keys && _root.keys[38]) {Player.speed= 1; }
-    if (_root.keys && _root.keys[40]) {Player.speed= -1; }
+    //set to arrow keys for now, but can be adapted to wasd by changing the key number.
+    if (_root.keys && _root.keys[37]) {Player.moveAngle = -5; }
+    if (_root.keys && _root.keys[39]) {Player.moveAngle = 5; }
+    if (_root.keys && _root.keys[38]) {Player.speed= 6.5; }
+    if (_root.keys && _root.keys[40]) {Player.speed= -6.5; }
     Player.newPos();
     Player.update();
 }
-</script>
+    </script>
 </body>
 </html>
