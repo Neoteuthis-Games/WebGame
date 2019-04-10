@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="thefool2.tsx"/>
+ <tileset firstgid="1" name="thefool2" tilewidth="32" tileheight="32" tilecount="64" columns="4">
+  <grid orientation="orthogonal" width="64" height="64"/>
+  <image source="../images/tilemap2.png" width="128" height="128"/>
+  <tile id="3">
+   <animation>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="11" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="7" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="50"/>
+    <frame tileid="14" duration="50"/>
+   </animation>
+  </tile>
+ </tileset>
  <layer id="1" name="ground" width="100" height="100">
   <data encoding="csv">
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
