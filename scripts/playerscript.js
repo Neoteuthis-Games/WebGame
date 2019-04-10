@@ -1,6 +1,13 @@
-var playerscript = (function() {
+class playerscript extends Phaser.GameObjects.Container {
     'use strict';
-    
+    super(config.scene);
+this.scene = config.scene;
+this.back = this.scene.add.image(0, 0);
+this.add(this.back);
+this.scene.add.existing(this);
+
+this.soldier = this.scene.add.sprite(this.displayWidth / 4, game.config.height * .9, "soldier");
+this.add(this.soldier);
 var Player;// = this.add.sprite(200, 200, "soldier");
 
 function onLoad() {
@@ -9,12 +16,12 @@ function onLoad() {
     _root.start();
 }
 //its the root, not actually a var!!
-var _root = {
-    canvas : document.createElement("canvas"),
+/*var _root = {
+  // this.canvas : document.createElement("canvas"),
     start : function() {
         //var playerSprite = this.add.sprite(200, 200, 1, "soldier");
-        this.canvas.width = 480;
-        this.canvas.height = 270;
+        //this.canvas.width = 480;
+        //this.canvas.height = 270;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -34,7 +41,7 @@ var _root = {
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-}
+}*/
 
 function component(width, height, color, x, y, type) {
 
@@ -77,3 +84,12 @@ function onEnterframe() {
     Player.update();
 }
     })();
+
+/*class Player extends Phaser.GameObjects.Sprite {
+    constructor(scene, x, y, key) {
+        super(scene, x, y, key);
+        this.scene = scene;
+        this.scene.add.existing(this);
+        this.setOrigin(0);
+    }
+    }*/
