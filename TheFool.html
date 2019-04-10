@@ -89,6 +89,7 @@ function component(width, height, color, x, y, type) {
         ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
         ctx.restore();    
     }
+    //how javascript moves things
     this.newPos = function() {
         this.angle += this.moveAngle * Math.PI / 180;
         this.x += this.speed * Math.sin(this.angle);
