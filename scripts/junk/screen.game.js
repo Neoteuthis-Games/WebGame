@@ -1,17 +1,84 @@
 class SceneMain extends Phaser.Scene {
     constructor() {
         super({
-            key: "SceneMain"
+            key: "game-screen"
         });
     }
-   
+
+    game;["game-screen"] = (function () {
+    var firstRun = true,
+        paused;
+
+    function startGame() {
+        SceneMain.js
+        var board = jewel.board,
+            display = jewel.display;
+        board.initialize(function () {
+            display.initialize(function () {
+                display.redraw(board.getBoard(), function () {
+                    // do nothing for now
+                });
+            });
+        });
+    }
+
+    function pauseGame() {
+        if (paused) {
+            return; // do nothing if already paused
+        }
+        var dom = jewel.dom,
+            overlay = dom.$("#game-screen .pause-overlay")[0];
+        overlay.style.display = "block";
+        paused = true;
+    }
+
+    function exitGame() {
+        pauseGame();
+        var confirmed = window.confirm("Do you want to return to the main menu?");
+        resumeGame();
+        if (confirmed) {
+            jewel.showScreen("main-menu");
+        }
+    }
+
+    function resumeGame() {
+        var dom = jewel.dom,
+            overlay = dom.$("#game-screen .pause-overlay")[0];
+        overlay.style.display = "none";
+        paused = false;
+    }
+
+    function setup() {
+        var dom = jewel.dom;
+        dom.bind("footer button.exit", "click", exitGame);
+        dom.bind("footer button.pause", "click", pauseGame);
+        dom.bind(".pause-overlay", "click", resumeGame);
+    }
+
+    function run() {
+        if (firstRun) {
+            setup();
+            firstRun = false;
+        }
+        startGame();
+    }
     preload() {
+        //  this.load.spritesheet("sprWater", "images/sprWater.png", {
+        ///      frameWidth: 16,
+        //     frameHeight: 16
+        //  });
         this.load.image("sprSand", "images/sprSand.png");
         this.load.image("sprGrass", "images/sprGrass.png");
         this.load.image("soldier", "images/char/char.png");
     }
 
     create() {
+        //this.anims.create({
+        // key: "sprWater",
+        //frames: this.anims.generateFrameNumbers("sprWater"),
+        // frameRate: 5,
+        // repeat: -1
+        //   });
         var player = this.add.sprite(200, 200, 1, "soldier");
         this.chunkSize = 16;
         this.tileSize = 16;
@@ -67,11 +134,11 @@ class SceneMain extends Phaser.Scene {
             var chunk = this.chunks[i];
 
             if (Phaser.Math.Distance.Between(
-                    snappedChunkX,
-                    snappedChunkY,
-                    chunk.x,
-                    chunk.y
-                ) < 3) {
+                snappedChunkX,
+                snappedChunkY,
+                chunk.x,
+                chunk.y
+            ) < 3) {
                 if (chunk !== null) {
                     chunk.load();
                 }
@@ -97,3 +164,17 @@ class SceneMain extends Phaser.Scene {
         this.cameras.main.centerOn(this.followPoint.x, this.followPoint.y);
     }
 }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    
