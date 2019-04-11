@@ -38,6 +38,10 @@
             frameWidth: 70,
             frameHeight: 100
         });
+        this.load.spritesheet('enemy1', 'images/enemy1.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
         this.load.image('tiles', 'images/tilemap2.png');
         this.load.tilemapTiledJSON('level1', 'maps/foollv.json');
     }
@@ -94,12 +98,39 @@ var laser = new Phaser.Class({
         }
     });
 
+        var monster = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize:
+        function monster (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1');
+            this.speed = Phaser.Math.GetSpeed(400, 1);
+        },
+        summon: function (x, y)
+        {
+            this.setPosition(x, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+        update: function (time, delta)
+        {
+            this.x += this.speed * Phaser.Math.Between(-20,20);
+            this.y += this.speed * Phaser.Math.Between(-20,20);
+        }
+    });
+        
     lasers = this.add.group({
         classType: laser,
         maxSize: 10,
         runChildUpdate: true
     });
 
+        monsters = this.add.group({
+        classType: monster,
+        maxSize: 20,
+        runChildUpdate: true
+    });
+        
     speed = Phaser.Math.GetSpeed(300, 1);
             var map = this.make.tilemap({ key: 'level1' })
             var tileset = map.addTilesetImage("thefool2", "tiles");
@@ -126,6 +157,14 @@ var laser = new Phaser.Class({
         {
             laser.fire(player.x, player.y);
             lastFired = time + 50;
+        }
+        });
+        this.input.keyboard.on('keydown_Q', function (event) {
+                  var monster = monsters.get();
+
+        if (monster)
+        {
+            monster.summon(player.x + 100, player.y + 100);
         }
         });
         this.input.keyboard.on('keydown_W', function (event) {
