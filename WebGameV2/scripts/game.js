@@ -34,6 +34,7 @@ var config = {
     var powershot = false;
     var homingshot = false;
     var Contents = ["Points","Health","WideShot","PowerShot","HomingShot","Boots"];
+    var playerangle = 0;
     //var ChestContents = {"Health":1, "points":2, "wideshot":3,"powershot":4, "homingshot":5, "boots":6}
     //var camera = game.cameras.main;
 
@@ -103,17 +104,36 @@ var laser = new Phaser.Class({
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'laser');
             this.speed = Phaser.Math.GetSpeed(800, 1);
+            var myangle = -90;
         },
         fire: function (x, y)
         {
             this.setPosition(x, y);
-            this.setRotation(30);
+            this.setRotation(playerangle+30);
             this.setActive(true);
             this.setVisible(true);
+            myangle = playerangle;
         },
         update: function (time, delta)
         {
-            this.x += this.speed * delta;
+            switch(myangle){
+                case 0:
+                     this.y -= this.speed * delta;
+                    break;
+                case -90:
+                     this.x += this.speed * delta;
+                    break;
+                case 90:
+                     this.x -= this.speed * delta;
+                    break;
+                case 180:
+                     this.y += this.speed * delta;
+                    break;
+                default:
+                     this.x += this.speed * delta;
+                    break;
+            }
+            //this.x += this.speed * delta;
             if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)>450)
             {
                 this.setActive(false);
@@ -322,21 +342,29 @@ var laser = new Phaser.Class({
             player.body.setVelocityY(-65);
             player.setAccelerationY(-65);
             playerStats.speed= playerStats.movespeed;
+            playerangle = 0;
+            // player.rotation = playerangle* (180 / 3.14);
         });
         this.input.keyboard.on('keydown_S', function (event) {
             player.body.setVelocityY(65);
             player.setAccelerationY(65);
             playerStats.speed= -playerStats.movespeed;
+            playerangle = 180;
+            // player.rotation = playerangle* (180 / 3.14);
         });
         this.input.keyboard.on('keydown_A', function (event) {
             player.body.setVelocityX(-65);
             player.setAccelerationX(-65);
             playerStats.moveAngle = playerStats.turnspeed;
+            playerangle = 90;
+            // player.rotation = playerangle * (180 / 3.14);
         });
         this.input.keyboard.on('keydown_D', function (event) {
             player.body.setVelocityX(65);
             player.setAccelerationX(65);
              playerStats.moveAngle = -playerStats.turnspeed;
+            playerangle = -90;
+             //player.rotation = playerangle* (180 / 3.14);
         });
         //apparently this line is important to make motion seem more natural.
         player.body.velocity.normalize().scale(speed);
@@ -357,6 +385,8 @@ var laser = new Phaser.Class({
                 player.setAccelerationX(0);
         });
         this.physics.add.collider(player, worldLayer);
+        this.physics.add.collider(monsters2, worldLayer);
+        this.physics.add.collider(monsters2, monsters2);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player); 
         //spawn items
@@ -370,10 +400,11 @@ var laser = new Phaser.Class({
             console.log(valueX,valueY);
         }
         }
-        
+         player.rotation = playerangle;
     }
 
     function update(time, delta) {
+       
         //player.rotation = game.physics.arcade.angleToPointer(player);
         //playerStats.onEnterframe();
       //player.translate(playerStats.x, playerStats.y);
