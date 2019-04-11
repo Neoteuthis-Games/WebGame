@@ -25,9 +25,7 @@
     var lasers;
     var firespeed = 100;
     var cooldown = 0;
-    var lastFired = 0;
-
-
+    //var camera = game.cameras.main;
 
     function preload() {
         this.load.spritesheet('soldier', 'images/idle-rifle-tileset.png', {
@@ -134,8 +132,8 @@ var laser = new Phaser.Class({
     speed = Phaser.Math.GetSpeed(300, 1);
             var map = this.make.tilemap({ key: 'level1' })
             var tileset = map.addTilesetImage("thefool2", "tiles");
-            var belowLayer = map.createStaticLayer("ground", tileset, 0, 0);
-            var worldLayer = map.createStaticLayer("walls", tileset, 0, 0);
+            var belowLayer = map.createDynamicLayer("ground", tileset, 0, 0);
+            var worldLayer = map.createDynamicLayer("walls", tileset, 0, 0);
         worldLayer.setCollisionBetween(4, 15);
         this.physics.world.setBounds(0, 0, 800, 600)
         //player
@@ -156,7 +154,6 @@ var laser = new Phaser.Class({
         if (laser)
         {
             laser.fire(player.x, player.y);
-            lastFired = time + 50;
         }
         });
         this.input.keyboard.on('keydown_Q', function (event) {
@@ -188,7 +185,8 @@ var laser = new Phaser.Class({
             player.setAccelerationX(65);
              playerStats.moveAngle = -playerStats.turnspeed;
         });
-
+        //apparently this line is important to make motion seem more natural.
+        player.body.velocity.normalize().scale(speed);
         this.input.keyboard.on('keyup_W', function (event) {
             if (moveKeys['down'].isUp)
                 player.setAccelerationY(0);
@@ -206,7 +204,8 @@ var laser = new Phaser.Class({
                 player.setAccelerationX(0);
         });
         this.physics.add.collider(player, worldLayer);
-
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(player); 
     }
 
     function update(time, delta) {
