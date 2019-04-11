@@ -119,6 +119,15 @@ var laser = new Phaser.Class({
                 this.setActive(false);
                 this.setVisible(false);
             }
+            if(powershot == true){ 
+//change frame
+        }
+            if(wideshot == true){ 
+                //change frame
+        }
+            if(homingshot == true){ 
+                //ditto
+        }
         }
     });
 
@@ -129,6 +138,7 @@ var laser = new Phaser.Class({
         function item (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 32, 32, 'item');
+            var myContents;
         },
         create: function (x, y)
         {
@@ -141,14 +151,39 @@ var laser = new Phaser.Class({
             if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
             {
                 //ADDD EFFECTS HERE
-                var random = Phaser.Math.Between(2,4);
+                var random = Math.floor(Math.random() * 6);
                 //let myContents = ChestContents.random;
-               let myContents = Contents[Math.floor(Math.random() * 6)];
+               let myContents = Contents[random];
                  console.log("Collected " + myContents);
                 this.setActive(false);
                 this.setVisible(false);
-                
+                this.Activate(myContents);
             }
+        },
+            Activate: function (myContents){
+                //var Contents = ["Points","Health","WideShot","PowerShot","HomingShot","Boots"];
+            switch(myContents) {
+  case "Points":
+    score += 1000;
+    break;
+  case "Health":
+    playerhp += 50;
+    break;
+    case "WideShot":
+    wideshot = true;
+    break;
+    case "PowerShot":
+    powershot = true;
+    break;
+    case "HomingShot":
+    homingshot = true;
+    break;
+    case "Boots":
+    console.log("AUSTINS BOOTS");
+    break;
+  default:
+    break;
+}
         }
     });
         
@@ -178,6 +213,38 @@ var laser = new Phaser.Class({
         }
     });
         
+        
+        var monster2 = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize:
+        function monster (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy3');
+            this.speed = Phaser.Math.GetSpeed(250, 100);
+        },
+        summon: function (x, y)
+        {
+            this.setPosition(x, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+        update: function (time, delta)
+        {
+            this.target = player;
+            targetPosX = player.x;
+            targetPosY = player.y;
+            distanceToPlayerX = targetPosX - this.x;
+            distanceToPlayerY = targetPosY - this.y;
+            distanceToPlayer = Math.sqrt(distanceToPlayerX * distanceToPlayerX + distanceToPlayerY * distanceToPlayerY);
+            console.log('Distance to player: ' + distanceToPlayer);
+            if(distanceToPlayer < 30) {
+                console.log('player in range');
+            }
+            this.x += distanceToPlayerX * this.speed;
+            this.y += distanceToPlayerY * this.speed;
+        }
+    });
+        
     lasers = this.add.group({
         classType: laser,
         maxSize: 10,
@@ -189,6 +256,13 @@ var laser = new Phaser.Class({
         maxSize: 20,
         runChildUpdate: true
     });
+        
+        monsters2 = this.add.group({
+        classType: monster2,
+        maxSize: 20,
+        runChildUpdate: true
+    });
+        
         items = this.add.group({
         classType: collectable,
         maxSize: 20,
@@ -231,6 +305,17 @@ var laser = new Phaser.Class({
             var valueX = Phaser.Math.Between(-150, 150);
             var valueY = Phaser.Math.Between(-150, 150);
             monster.summon(player.x + valueX, player.y + valueY);
+        }
+        });
+        this.input.keyboard.on('keydown_E', function (event) {
+            //SUMMON A MONSTER. LETS HAVE MULTIPLE OFFSCREEN SPAWN POINTS
+                  var monster2 = monsters2.get();
+
+        if (monster2)
+        {
+            var valueX = Phaser.Math.Between(-150, 150);
+            var valueY = Phaser.Math.Between(-150, 150);
+            monster2.summon(player.x + valueX, player.y + valueY);
         }
         });
         this.input.keyboard.on('keydown_W', function (event) {
