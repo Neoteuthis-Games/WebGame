@@ -88,7 +88,7 @@ var laser = new Phaser.Class({
         update: function (time, delta)
         {
             this.x += this.speed * delta;
-            if (this.y < -50 || this.x >= 850)
+            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)>450)
             {
                 this.setActive(false);
                 this.setVisible(false);
@@ -135,7 +135,7 @@ var laser = new Phaser.Class({
             var belowLayer = map.createDynamicLayer("ground", tileset, 0, 0);
             var worldLayer = map.createDynamicLayer("walls", tileset, 0, 0);
         worldLayer.setCollisionBetween(4, 15);
-        this.physics.world.setBounds(0, 0, 800, 600)
+        this.physics.world.setBounds(0, 0, 3200, 3200)
         //player
        var player = this.physics.add.sprite(400, 300, 'soldier');
         player.body.allowRotation = false;
