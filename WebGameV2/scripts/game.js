@@ -1,4 +1,4 @@
-        var config = {
+var config = {
         type: Phaser.WEBGL,
         width: 800,
         height: 600,
@@ -133,7 +133,7 @@ var laser = new Phaser.Class({
         function monster (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1');
-            this.speed = Phaser.Math.GetSpeed(400, 1);
+            this.speed = Phaser.Math.GetSpeed(20, 1);
         },
         summon: function (x, y)
         {
@@ -143,8 +143,11 @@ var laser = new Phaser.Class({
         },
         update: function (time, delta)
         {
-            this.x += this.speed * Phaser.Math.Between(-20,20);
-            this.y += this.speed * Phaser.Math.Between(-20,20);
+            this.target = player;
+            targetPosX = player.x;
+            targetPosY = player.y;
+            console.log('Player spotted at - X: ' + player.x + ' Y: ' + player.y);
+            
         }
     });
         
@@ -170,6 +173,7 @@ var laser = new Phaser.Class({
         //player
        var player = this.physics.add.sprite(400, 300, 'soldier');
         player.body.allowRotation = false;
+        
        let playerStats = new character('player', 'soldier',32,32, 0, 0, 5, 6.5);
         player.setOrigin(0.5, 0.5).setDisplaySize(32,32).setCollideWorldBounds(true).setDrag(20000, 200000);
         moveKeys = this.input.keyboard.addKeys({
@@ -193,7 +197,9 @@ var laser = new Phaser.Class({
 
         if (monster)
         {
-            monster.summon(player.x + 100, player.y + 100);
+            var valueX = Phaser.Math.Between(-150, 150);
+            var valueY = Phaser.Math.Between(-150, 150);
+            monster.summon(player.x + valueX, player.y + valueY);
         }
         });
         this.input.keyboard.on('keydown_W', function (event) {
