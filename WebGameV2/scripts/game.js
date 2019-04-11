@@ -25,6 +25,16 @@ var config = {
     var lasers;
     var firespeed = 100;
     var cooldown = 0;
+    var playerhp = 100;
+    var score = 0;
+    var lives = 3;
+    var highscore = 0;
+    var boots = 0;
+    var wideshot = false;
+    var powershot = false;
+    var homingshot = false;
+    var Contents = ["Points","Health","WideShot","PowerShot","HomingShot","Boots"];
+    //var ChestContents = {"Health":1, "points":2, "wideshot":3,"powershot":4, "homingshot":5, "boots":6}
     //var camera = game.cameras.main;
 
     function preload() {
@@ -118,7 +128,6 @@ var laser = new Phaser.Class({
         initialize:
         function item (scene)
         {
-            //SPRITES NEEDED
             Phaser.GameObjects.Image.call(this, scene, 32, 32, 'item');
         },
         create: function (x, y)
@@ -132,7 +141,10 @@ var laser = new Phaser.Class({
             if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
             {
                 //ADDD EFFECTS HERE
-                 console.log("Collected!");
+                var random = Phaser.Math.Between(2,4);
+                //let myContents = ChestContents.random;
+               let myContents = Contents[Math.floor(Math.random() * 6)];
+                 console.log("Collected " + myContents);
                 this.setActive(false);
                 this.setVisible(false);
                 
