@@ -205,6 +205,7 @@ var laser = new Phaser.Class({
             if (moveKeys['left'].isUp)
                 player.setAccelerationX(0);
         });
+        this.physics.add.collider(player, worldLayer);
 
     }
 
