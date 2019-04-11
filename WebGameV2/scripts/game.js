@@ -21,32 +21,13 @@
 
     var game = new Phaser.Game(config);
     var GameState = function(game) {};
-    var playerStats;
     var player;
     var lasers;
+    var firespeed = 100;
+    var cooldown = 0;
+    var lastFired = 0;
 
-class character{
-constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
-    this.type = type;
-    this.sprite = sprite;
-    this.width = width;
-    this.height = height;
-    this.speed = 0;
-    this.angle = 0;
-    this.moveAngle = 0;
-    this.movespeed = movespeed;
-    this.turnspeed = turnspeed;
-    this.x = x;
-    this.y = y; 
-}
-//    onEnterframe(){
-//       this.moveAngle = 0;
-//       this.speed = 0
-//       this.angle += this.moveAngle * Math.PI / 180;
-//       playerStats.x += playerStats.speed * Math.sin(this.angle);
-//       playerStats.y -= playerStats.speed * Math.cos(this.angle);
-//    }
-}
+
 
     function preload() {
         this.load.spritesheet('soldier', 'images/idle-rifle-tileset.png', {
@@ -62,8 +43,64 @@ constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
     }
 
     function create() {
+        
+var character = new Phaser.Class({
+        //Extends: Phaser.GameObjects.Image,
+    constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
+    this.type = type;
+    this.sprite = sprite;
+    this.width = width;
+    this.height = height;
+    this.speed = 0;
+    this.angle = 0;
+    this.moveAngle = 0;
+    this.movespeed = movespeed;
+    this.turnspeed = turnspeed;
+    this.x = x;
+    this.y = y; 
+},
+    onEnterframe: function(){
+       this.moveAngle = 0;
+       this.speed = 0
+       this.angle += this.moveAngle * Math.PI / 180;
+       playerStats.x += playerStats.speed * Math.sin(this.angle);
+       playerStats.y -= playerStats.speed * Math.cos(this.angle);
+    }
+});
+        
+var laser = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize:
+        function laser (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'laser');
+            this.speed = Phaser.Math.GetSpeed(400, 1);
+        },
+        fire: function (x, y)
+        {
+            this.setPosition(x, y);
+            this.setRotation(30);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+            if (this.y < -50 || this.x >= 850)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+    });
 
+    lasers = this.add.group({
+        classType: laser,
+        maxSize: 10,
+        runChildUpdate: true
+    });
 
+    speed = Phaser.Math.GetSpeed(300, 1);
             var map = this.make.tilemap({ key: 'level1' })
             var tileset = map.addTilesetImage("thefool2", "tiles");
             var belowLayer = map.createStaticLayer("ground", tileset, 0, 0);
@@ -72,6 +109,7 @@ constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
         this.physics.world.setBounds(0, 0, 800, 600)
         //player
        var player = this.physics.add.sprite(400, 300, 'soldier');
+        player.body.allowRotation = false;
        let playerStats = new character('player', 'soldier',32,32, 0, 0, 5, 6.5);
         player.setOrigin(0.5, 0.5).setDisplaySize(32,32).setCollideWorldBounds(true).setDrag(20000, 200000);
         moveKeys = this.input.keyboard.addKeys({
@@ -81,6 +119,15 @@ constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
             'right': Phaser.Input.Keyboard.KeyCodes.D,
         });
 //key.isDown is much smoother than onKeydown
+        this.input.keyboard.on('keydown_SPACE', function (event) {
+                  var laser = lasers.get();
+
+        if (laser)
+        {
+            laser.fire(player.x, player.y);
+            lastFired = time + 50;
+        }
+        });
         this.input.keyboard.on('keydown_W', function (event) {
             player.setAccelerationY(-65);
             playerStats.speed= playerStats.movespeed;
@@ -117,23 +164,10 @@ constructor(type, sprite, width,height, x, y, movespeed, turnspeed) {
 
     }
 
-    function update() {
+    function update(time, delta) {
+        //player.rotation = game.physics.arcade.angleToPointer(player);
         //playerStats.onEnterframe();
-     // player.translate(playerStats.x, playerStats.y);
-       // player.rotate(playerStats.angle);  
+      //player.translate(playerStats.x, playerStats.y);
+        //player.rotate(playerStats.angle);  
        
    }
-//function resetLaser(laser) {
-//	// Destroy the laser
-//	laser.kill();
-//}
-//   
-//function fireLaser() {
-//	// Get the first laser that's inactive, by passing 'false' as a parameter
-//	var laser = lasers.getFirstExists(false);
-//	if (laser) {
-//		// If we have a laser, set it to the starting position
-//		laser.reset(player.x, player.y - 20);
-//		// Give it a velocity of -500 so it starts shooting
-//		laser.body.velocity.y = -500;
-//	}
