@@ -40,6 +40,19 @@ var config = {
             frameWidth: 16,
             frameHeight: 16
         });
+        this.load.spritesheet('enemy2', 'images/enemy2.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.spritesheet('enemy3', 'images/enemy3.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.spritesheet('enemy4', 'images/enemy4.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.image('item', 'images/item.png');
         this.load.image('tiles', 'images/tilemap2.png');
         this.load.tilemapTiledJSON('level1', 'maps/foollv.json');
         this.load.audio("music","audio/01 game-game_0.ogg");
