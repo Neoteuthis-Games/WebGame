@@ -160,6 +160,7 @@ var laser = new Phaser.Class({
         }
         });
         this.input.keyboard.on('keydown_Q', function (event) {
+            //SUMMON A MONSTER. LETS HAVE MULTIPLE OFFSCREEN SPAWN POINTS
                   var monster = monsters.get();
 
         if (monster)
@@ -168,18 +169,22 @@ var laser = new Phaser.Class({
         }
         });
         this.input.keyboard.on('keydown_W', function (event) {
+            player.body.setVelocityY(-65);
             player.setAccelerationY(-65);
             playerStats.speed= playerStats.movespeed;
         });
         this.input.keyboard.on('keydown_S', function (event) {
+            player.body.setVelocityY(65);
             player.setAccelerationY(65);
             playerStats.speed= -playerStats.movespeed;
         });
         this.input.keyboard.on('keydown_A', function (event) {
+            player.body.setVelocityX(-65);
             player.setAccelerationX(-65);
             playerStats.moveAngle = playerStats.turnspeed;
         });
         this.input.keyboard.on('keydown_D', function (event) {
+            player.body.setVelocityX(65);
             player.setAccelerationX(65);
              playerStats.moveAngle = -playerStats.turnspeed;
         });
