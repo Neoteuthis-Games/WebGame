@@ -133,7 +133,7 @@ var laser = new Phaser.Class({
         function monster (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1');
-            this.speed = Phaser.Math.GetSpeed(20, 1);
+            this.speed = Phaser.Math.GetSpeed(65, 1);
         },
         summon: function (x, y)
         {
@@ -147,6 +147,8 @@ var laser = new Phaser.Class({
             targetPosX = player.x;
             targetPosY = player.y;
             console.log('Player spotted at - X: ' + player.x + ' Y: ' + player.y);
+            this.x += this.speed * Phaser.Math.Between(-20,20);
+            this.y += this.speed * Phaser.Math.Between(-20,20);
             
         }
     });
