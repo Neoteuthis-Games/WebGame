@@ -119,7 +119,7 @@ var laser = new Phaser.Class({
         function item (scene)
         {
             //SPRITES NEEDED
-            Phaser.GameObjects.Image.call(this, scene, 32, 32, 'laser');
+            Phaser.GameObjects.Image.call(this, scene, 32, 32, 'item');
         },
         create: function (x, y)
         {
@@ -129,10 +129,10 @@ var laser = new Phaser.Class({
         },
         update: function (time, delta)
         {
-            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)>2)
+            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
             {
-                Debug.log("collected!");
                 //ADDD EFFECTS HERE
+                 console.log("Collected!");
                 this.setActive(false);
                 this.setVisible(false);
                 
@@ -177,7 +177,11 @@ var laser = new Phaser.Class({
         maxSize: 20,
         runChildUpdate: true
     });
-        
+        items = this.add.group({
+        classType: collectable,
+        maxSize: 20,
+        runChildUpdate: true
+    });
     speed = Phaser.Math.GetSpeed(300, 1);
             var map = this.make.tilemap({ key: 'level1' })
             var tileset = map.addTilesetImage("thefool2", "tiles");
@@ -258,6 +262,18 @@ var laser = new Phaser.Class({
         this.physics.add.collider(player, worldLayer);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player); 
+        //spawn items
+        for(var i = 0; i<20; i++){
+             var item = items.get();
+        if (item)
+        {
+            var valueX = Phaser.Math.Between(0, 200);
+            var valueY = Phaser.Math.Between(0, 200);
+            item.create(16*valueX,16*valueY);
+            console.log(valueX,valueY);
+        }
+        }
+        
     }
 
     function update(time, delta) {
