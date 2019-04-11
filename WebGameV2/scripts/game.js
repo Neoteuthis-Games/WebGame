@@ -76,7 +76,7 @@ var laser = new Phaser.Class({
         function laser (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'laser');
-            this.speed = Phaser.Math.GetSpeed(400, 1);
+            this.speed = Phaser.Math.GetSpeed(800, 1);
         },
         fire: function (x, y)
         {
@@ -96,6 +96,34 @@ var laser = new Phaser.Class({
         }
     });
 
+        
+        var collectable = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize:
+        function item (scene)
+        {
+            //SPRITES NEEDED
+            Phaser.GameObjects.Image.call(this, scene, 32, 32, 'laser');
+        },
+        create: function (x, y)
+        {
+            this.setPosition(x, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+        update: function (time, delta)
+        {
+            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)>2)
+            {
+                Debug.log("collected!");
+                //ADDD EFFECTS HERE
+                this.setActive(false);
+                this.setVisible(false);
+                
+            }
+        }
+    });
+        
         var monster = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
