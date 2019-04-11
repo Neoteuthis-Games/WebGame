@@ -42,9 +42,12 @@
         });
         this.load.image('tiles', 'images/tilemap2.png');
         this.load.tilemapTiledJSON('level1', 'maps/foollv.json');
+        this.load.audio("music","audio/01 game-game_0.ogg");
     }
 
     function create() {
+        var music = this.sound.add("music", 'loop: true');
+        music.play();
         
 var character = new Phaser.Class({
         //Extends: Phaser.GameObjects.Image,
