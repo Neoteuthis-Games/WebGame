@@ -96,7 +96,7 @@ var character = new Phaser.Class({
        playerStats.y -= playerStats.speed * Math.cos(this.angle);
     }
 });
-        
+        //this will be the wide laser
 var laser = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
@@ -157,7 +157,7 @@ var laser = new Phaser.Class({
         initialize:
         function item (scene)
         {
-            Phaser.GameObjects.Image.call(this, scene, 32, 32, 'item');
+            Phaser.GameObjects.Image.call(this, scene, 64, 64, 'item');
             var myContents;
         },
         create: function (x, y)
@@ -206,7 +206,7 @@ var laser = new Phaser.Class({
 }
         }
     });
-        
+        //wiggles and bounces
         var monster = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
@@ -226,21 +226,28 @@ var laser = new Phaser.Class({
             this.target = player;
             targetPosX = player.x;
             targetPosY = player.y;
-            console.log('Player spotted at - X: ' + player.x + ' Y: ' + player.y);
+            //console.log('Player spotted at - X: ' + player.x + ' Y: ' + player.y);
             this.x += this.speed * Phaser.Math.Between(-20,20);
             this.y += this.speed * Phaser.Math.Between(-20,20);
+             if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
+            {
+                //ADDD EFFECTS HERE
+                playerhp--;
+                player.x -= (this.x - player.x)*1.5;
+                 player.y -= (this.y - player.y)*1.5;
+            }
             
         }
     });
         
-        
+        //follows and hurts
         var monster2 = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
         function monster (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy3');
-            this.speed = Phaser.Math.GetSpeed(250, 100);
+            this.speed = Phaser.Math.GetSpeed(85, 10);
         },
         summon: function (x, y)
         {
@@ -262,6 +269,69 @@ var laser = new Phaser.Class({
             }
             this.x += distanceToPlayerX * this.speed;
             this.y += distanceToPlayerY * this.speed;
+            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
+            {
+                //ADDD EFFECTS HERE
+                playerhp-=2;
+                player.x -= (this.x - player.x);
+                 player.y -= (this.y - player.y);
+            }
+        }
+    });
+        //swarms and homes
+        //we should spawn these around where their first point is to get a swarming bees type behaviour
+        var monster3 = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize: function monster(scene) {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy4');
+            //getspeed is distance over time
+            this.speed = Phaser.Math.GetSpeed(65, 10);
+        },
+        summon: function (x, y) {
+            this.setPosition(x, y);
+            this.setActive(true);
+            this.setVisible(true);
+           // nextPointX = Phaser.Math.Between(0, 3200);
+           // nextPointY = Phaser.Math.Between(0, 3200);
+        },
+        update: function (time, delta) {
+            //this.x += this.speed * Phaser.Math.Between(-20,20);
+           //this.y += this.speed * Phaser.Math.Between(-20,20);
+            //find player
+            targetPosX = player.x;
+            targetPosY = player.y;
+            distanceToPlayerX = targetPosX - this.x;
+            distanceToPlayerY = targetPosY - this.y;
+            distanceToPlayer = Math.sqrt(distanceToPlayerX * distanceToPlayerX + distanceToPlayerY * distanceToPlayerY);
+            console.log('Distance to player: ' + distanceToPlayer);
+            //i like the chaotic swarm of putting it on update, might be more efficient to add wiggle and have the swarm follow a point though....
+            nextPointX = Phaser.Math.Between(0, 3200);
+            nextPointY = Phaser.Math.Between(0, 3200);
+            distanceToPointX = nextPointX - this.x;
+            distanceToPointY = nextPointY - this.y;
+            distanceToPoint = Math.sqrt(distanceToPointX * distanceToPointX + distanceToPointY * distanceToPointY);
+            if(distanceToPoint < 20) {
+               nextPointX = Phaser.Math.Between(0, 3200);
+                nextPointY = Phaser.Math.Between(0, 3200);
+            }
+            //console.log(distanceToPointX, distanceToPointY);
+           if(distanceToPlayer >= 70){
+            this.x += distanceToPointX * this.speed;
+            this.y += distanceToPointY * this.speed;
+           } else
+            if(distanceToPlayer < 120) {
+                console.log('player in range');
+                this.x += distanceToPlayerX * this.speed;
+                this.y += distanceToPlayerY * this.speed;
+            }
+            
+            if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y)<20)
+            {
+                //ADDD EFFECTS HERE
+                playerhp-=5;
+                player.x -= (this.x - player.x);
+                 player.y -= (this.y - player.y);
+            }
         }
     });
         
@@ -282,7 +352,11 @@ var laser = new Phaser.Class({
         maxSize: 20,
         runChildUpdate: true
     });
-        
+             monsters3 = this.add.group({
+        classType: monster3,
+        maxSize: 10,
+        runChildUpdate: true
+    });
         items = this.add.group({
         classType: collectable,
         maxSize: 20,
@@ -336,6 +410,17 @@ var laser = new Phaser.Class({
             var valueX = Phaser.Math.Between(-150, 150);
             var valueY = Phaser.Math.Between(-150, 150);
             monster2.summon(player.x + valueX, player.y + valueY);
+        }
+        });
+        this.input.keyboard.on('keydown_R', function (event) {
+            //SUMMON A MONSTER. LETS HAVE MULTIPLE OFFSCREEN SPAWN POINTS
+                  var monster3 = monsters3.get();
+
+        if (monster3)
+        {
+            var valueX = Phaser.Math.Between(-150, 150);
+            var valueY = Phaser.Math.Between(-150, 150);
+            monster3.summon(player.x + valueX, player.y + valueY);
         }
         });
         this.input.keyboard.on('keydown_W', function (event) {
