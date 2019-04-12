@@ -26,30 +26,34 @@ var lasers;
 var firespeed = 100;
 var cooldown = 0;
 var playerhp = 100;
+var playerpower = 1;
 var score = 0;
 var lives = 3;
 var highscore = 0;
-var boots = 0;
-var wideshot = false;
-var powershot = false;
-var homingshot = false;
+//var boots = false;
+var currentpower = "none";
+//var wideshot = false;
+//var powershot = false;
+//var homingshot = false;
 var monster1Max = 20;
 var monster2Max = 20;
 var monster3Max = 20;
 var Contents = ["Points", "Health", "WideShot", "PowerShot", "HomingShot", "Boots"];
 var playerangle = 0;
-//var ChestContents = {"Health":1, "points":2, "wideshot":3,"powershot":4, "homingshot":5, "boots":6}
-//var camera = game.cameras.main;
 
 function preload() {
     this.load.spritesheet('soldier', 'images/idle-rifle-tileset.png', {
         frameWidth: 313,
         frameHeight: 207
     });
-    this.load.spritesheet('laser', 'images/beams.png', {
-        frameWidth: 70,
-        frameHeight: 100
-    });
+//    this.load.spritesheet('laser', 'images/beams.png', {
+//        frameWidth: 70,
+//        frameHeight: 100
+//    });
+    this.load.image('laser', 'images/laserball.png');
+    this.load.image('powerlaser', 'images/laserpower.png');
+    this.load.image('multilaser', 'images/lasermulti.png');
+    this.load.image('hominglaser', 'images/laserhome.png');
     this.load.spritesheet('enemy1', 'images/enemy1.png', {
         frameWidth: 16,
         frameHeight: 16
@@ -99,7 +103,7 @@ function create() {
             playerStats.y -= playerStats.speed * Math.cos(this.angle);
         }
     });
-    //this will be the wide laser
+    //laser
     var laser = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize: function laser(scene) {
@@ -137,19 +141,129 @@ function create() {
                 this.setActive(false);
                 this.setVisible(false);
             }
-            if (powershot == true) {
-                //change frame
-            }
-            if (wideshot == true) {
-                //change frame
-            }
-            if (homingshot == true) {
-                //ditto
-            }
         }
     });
 
-
+var powerlaser = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize: function laser(scene) {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'powerlaser');
+            this.speed = Phaser.Math.GetSpeed(1000, 1);
+            var myangle = -90;
+        },
+        fire: function (x, y) {
+            this.setPosition(x, y);
+            this.setRotation(playerangle + 30);
+            this.setActive(true);
+            this.setVisible(true);
+            myangle = playerangle;
+        },
+        update: function (time, delta) {
+            switch (myangle) {
+                case 0:
+                    this.y -= this.speed * delta;
+                    break;
+                case -90:
+                    this.x += this.speed * delta;
+                    break;
+                case 90:
+                    this.x -= this.speed * delta;
+                    break;
+                case 180:
+                    this.y += this.speed * delta;
+                    break;
+                default:
+                    this.x += this.speed * delta;
+                    break;
+            }
+            //this.x += this.speed * delta;
+            if (Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y) > 450) {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+    });
+    
+    var hominglaser = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize: function laser(scene) {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'hominglaser');
+            this.speed = Phaser.Math.GetSpeed(800, 1);
+            var myangle = -90;
+        },
+        fire: function (x, y) {
+            this.setPosition(x, y);
+            this.setRotation(playerangle + 30);
+            this.setActive(true);
+            this.setVisible(true);
+            myangle = playerangle;
+        },
+        update: function (time, delta) {
+            switch (myangle) {
+                case 0:
+                    this.y -= this.speed * delta;
+                    break;
+                case -90:
+                    this.x += this.speed * delta;
+                    break;
+                case 90:
+                    this.x -= this.speed * delta;
+                    break;
+                case 180:
+                    this.y += this.speed * delta;
+                    break;
+                default:
+                    this.x += this.speed * delta;
+                    break;
+            }
+            //this.x += this.speed * delta;
+            if (Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y) > 450) {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+    });
+    
+    var multilaser = new Phaser.Class({
+        Extends: Phaser.GameObjects.Image,
+        initialize: function laser(scene) {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'multilaser');
+            this.speed = Phaser.Math.GetSpeed(800, 1);
+            var myangle = -90;
+        },
+        fire: function (x, y) {
+            this.setPosition(x, y);
+            this.setRotation(playerangle + 30);
+            this.setActive(true);
+            this.setVisible(true);
+            myangle = playerangle;
+        },
+        update: function (time, delta) {
+            switch (myangle) {
+                case 0:
+                    this.y -= this.speed * delta;
+                    break;
+                case -90:
+                    this.x += this.speed * delta;
+                    break;
+                case 90:
+                    this.x -= this.speed * delta;
+                    break;
+                case 180:
+                    this.y += this.speed * delta;
+                    break;
+                default:
+                    this.x += this.speed * delta;
+                    break;
+            }
+            //this.x += this.speed * delta;
+            if (Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y) > 450) {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+    });
+    
     var collectable = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize: function item(scene) {
@@ -183,16 +297,17 @@ function create() {
                     playerhp += 50;
                     break;
                 case "WideShot":
-                    wideshot = true;
+                    currentpower = "wideshot"
                     break;
                 case "PowerShot":
-                    powershot = true;
+                    currentpower = "powershot"
                     break;
                 case "HomingShot":
-                    homingshot = true;
+                    currentpower = "homingshot"
                     break;
                 case "Boots":
                     console.log("AUSTINS BOOTS");
+                    currentpower = "none";
                     break;
                 default:
                     break;
@@ -323,6 +438,23 @@ function create() {
         runChildUpdate: true
     });
 
+    
+     plasers = this.add.group({
+        classType: powerlaser,
+        maxSize: 20,
+        runChildUpdate: true
+    });
+     mlasers = this.add.group({
+        classType: multilaser,
+        maxSize: 5,
+        runChildUpdate: true
+    });
+     hlasers = this.add.group({
+        classType: hominglaser,
+        maxSize: 5,
+        runChildUpdate: true
+    });
+    
     monsters = this.add.group({
         classType: monster,
         maxSize: 20,
@@ -365,22 +497,20 @@ function create() {
         'left': Phaser.Input.Keyboard.KeyCodes.A,
         'right': Phaser.Input.Keyboard.KeyCodes.D,
     });
-    //key.isDown is much smoother than onKeydown
-    this.input.keyboard.on('keydown_SPACE', function (event) {
-        var laser = lasers.get();
-
-        if (laser) {
-            laser.fire(player.x, player.y);
-        }
-    });
 
     for (var i = 0; i < monster1Max; i++) {
         var monster = monsters.get();
 
         if (monster) {
-            var valueX = Phaser.Math.Between(-150, 150);
-            var valueY = Phaser.Math.Between(-150, 150);
+            if(i < 4){
+            var valueX = Phaser.Math.Between(-250, 250);
+            var valueY = Phaser.Math.Between(-250, 250);
             monster.summon(player.x + valueX, player.y + valueY);
+            }else {
+                var valueX = Phaser.Math.Between(0, 3200);
+            var valueY = Phaser.Math.Between(0, 3200);
+            monster.summon(valueX, valueY);
+            }
         }
     }
 
@@ -389,9 +519,9 @@ function create() {
     
             if (monster2)
             {
-                var valueX = Phaser.Math.Between(-150, 150);
-                var valueY = Phaser.Math.Between(-150, 150);
-                monster2.summon(player.x + valueX, player.y + valueY);
+                  var valueX = Phaser.Math.Between(0, 3200);
+            var valueY = Phaser.Math.Between(0, 3200);
+            monster2.summon(valueX, valueY);
             }
     }
     
@@ -400,9 +530,9 @@ function create() {
     
             if (monster3)
             {
-                var valueX = Phaser.Math.Between(-150, 150);
-                var valueY = Phaser.Math.Between(-150, 150);
-                monster3.summon(player.x + valueX, player.y + valueY);
+                   var valueX = Phaser.Math.Between(0, 3200);
+            var valueY = Phaser.Math.Between(0, 3200);
+            monster3.summon(valueX, valueY);
             }
     }
     //        this.input.keyboard.on('keydown_Q', function (event) {
@@ -438,6 +568,36 @@ function create() {
 //                monster3.summon(player.x + valueX, player.y + valueY);
 //            }
     //        });
+    //key.isDown is much smoother than onKeydown
+    this.input.keyboard.on('keydown_SPACE', function (event) {
+        if(currentpower== "wideshot"){
+            var mlaser = mlasers.get();
+
+            if (mlaser) {
+                mlaser.fire(player.x, player.y);
+            }
+        } else
+        if(currentpower== "powershot"){
+            var plaser = plasers.get();
+
+            if (plaser) {
+                plaser.fire(player.x, player.y);
+            }
+        } else
+            if(currentpower== "homingshot"){
+            var hlaser = hlasers.get();
+
+            if (hlaser) {
+                hlaser.fire(player.x, player.y);
+            }
+        } else {
+        var laser = lasers.get();
+
+        if (laser) {
+            laser.fire(player.x, player.y);
+        }
+        }
+    });
     this.input.keyboard.on('keydown_W', function (event) {
         player.body.setVelocityY(-65);
         player.setAccelerationY(-65);
@@ -503,7 +663,10 @@ function create() {
 }
 
 function update(time, delta) {
-
+if(playerhp <= 0) {
+        playerhp == 0;
+        console.log("Oh no, you suck!");
+    }
     //player.rotation = game.physics.arcade.angleToPointer(player);
     //playerStats.onEnterframe();
     //player.translate(playerStats.x, playerStats.y);
