@@ -188,7 +188,7 @@ var powerlaser = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize: function laser(scene) {
             Phaser.GameObjects.Image.call(this, scene, 0, 0, 'hominglaser');
-            this.speed = Phaser.Math.GetSpeed(800, 1);
+            this.speed = Phaser.Math.GetSpeed(20, 1);
             var myangle = -90;
         },
         fire: function (x, y) {
@@ -239,21 +239,22 @@ var powerlaser = new Phaser.Class({
             myangle = playerangle;
         },
         update: function (time, delta) {
+             var random = Phaser.Math.Between(-2, 2);
             switch (myangle) {
                 case 0:
-                    this.y -= this.speed * delta;
+                    this.y -= this.speed * delta * random;
                     break;
                 case -90:
-                    this.x += this.speed * delta;
+                    this.x += this.speed * delta* random;
                     break;
                 case 90:
-                    this.x -= this.speed * delta;
+                    this.x -= this.speed * delta* random;
                     break;
                 case 180:
-                    this.y += this.speed * delta;
+                    this.y += this.speed * delta* random;
                     break;
                 default:
-                    this.x += this.speed * delta;
+                    this.x += this.speed * delta* random;
                     break;
             }
             //this.x += this.speed * delta;
@@ -446,7 +447,7 @@ var powerlaser = new Phaser.Class({
     });
      mlasers = this.add.group({
         classType: multilaser,
-        maxSize: 5,
+        maxSize: 20,
         runChildUpdate: true
     });
      hlasers = this.add.group({
