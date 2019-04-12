@@ -292,7 +292,7 @@ var powerlaser = new Phaser.Class({
             //var Contents = ["Points","Health","WideShot","PowerShot","HomingShot","Boots"];
             switch (myContents) {
                 case "Points":
-                    score += 1000;
+                    score += 100;
                     break;
                 case "Health":
                     playerhp += 50;
@@ -363,9 +363,9 @@ var powerlaser = new Phaser.Class({
             distanceToPlayerX = targetPosX - this.x;
             distanceToPlayerY = targetPosY - this.y;
             distanceToPlayer = Math.sqrt(distanceToPlayerX * distanceToPlayerX + distanceToPlayerY * distanceToPlayerY);
-            console.log('Distance to player: ' + distanceToPlayer);
+           // console.log('Distance to player: ' + distanceToPlayer);
             if (distanceToPlayer < 30) {
-                console.log('player in range');
+               // console.log('player in range');
             }
             this.x += distanceToPlayerX * this.speed;
             this.y += distanceToPlayerY * this.speed;
@@ -402,7 +402,7 @@ var powerlaser = new Phaser.Class({
             distanceToPlayerX = targetPosX - this.x;
             distanceToPlayerY = targetPosY - this.y;
             distanceToPlayer = Math.sqrt(distanceToPlayerX * distanceToPlayerX + distanceToPlayerY * distanceToPlayerY);
-            console.log('Distance to player: ' + distanceToPlayer);
+            //console.log('Distance to player: ' + distanceToPlayer);
             //i like the chaotic swarm of putting it on update, might be more efficient to add wiggle and have the swarm follow a point though....
             nextPointX = Phaser.Math.Between(0, 3200);
             nextPointY = Phaser.Math.Between(0, 3200);
@@ -419,7 +419,7 @@ var powerlaser = new Phaser.Class({
                 this.y += distanceToPointY * this.speed;
             } else
             if (distanceToPlayer < 120) {
-                console.log('player in range');
+               // console.log('player in range');
                 this.x += distanceToPlayerX * this.speed;
                 this.y += distanceToPlayerY * this.speed;
             }
@@ -433,48 +433,50 @@ var powerlaser = new Phaser.Class({
         }
     });
 
-    lasers = this.add.group({
+    lasers = this.physics.add.group({
+         //key: 'laser',
         classType: laser,
         maxSize: 10,
         runChildUpdate: true
     });
 
     
-     plasers = this.add.group({
+     plasers = this.physics.add.group({
         classType: powerlaser,
         maxSize: 20,
         runChildUpdate: true
     });
-     mlasers = this.add.group({
+     mlasers = this.physics.add.group({
         classType: multilaser,
         maxSize: 20,
         runChildUpdate: true
     });
-     hlasers = this.add.group({
+     hlasers = this.physics.add.group({
         classType: hominglaser,
         maxSize: 5,
         runChildUpdate: true
     });
     
-    monsters = this.add.group({
+    monsters = this.physics.add.group({
         classType: monster,
+         //key: 'monster',
         maxSize: 20,
         runChildUpdate: true
     });
 
-    monsters2 = this.add.group({
+    monsters2 = this.physics.add.group({
         classType: monster2,
         maxSize: 20,
         runChildUpdate: true
     });
-    monsters3 = this.add.group({
+    monsters3 = this.physics.add.group({
         classType: monster3,
         maxSize: 10,
         runChildUpdate: true
     });
     items = this.add.group({
         classType: collectable,
-        maxSize: 20,
+        maxSize: 75,
         runChildUpdate: true
     });
     speed = Phaser.Math.GetSpeed(300, 1);
@@ -491,7 +493,7 @@ var powerlaser = new Phaser.Class({
     player.body.allowRotation = false;
 
     let playerStats = new character('player', 'soldier', 32, 32, 0, 0, 5, 6.5);
-    player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(20000, 200000);
+    player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(200000, 200000);
     moveKeys = this.input.keyboard.addKeys({
         'up': Phaser.Input.Keyboard.KeyCodes.W,
         'down': Phaser.Input.Keyboard.KeyCodes.S,
@@ -646,6 +648,7 @@ var powerlaser = new Phaser.Class({
             player.setAccelerationX(0);
     });
     this.physics.add.collider(player, worldLayer);
+    this.physics.add.collider(lasers, monsters);
     this.physics.add.collider(monsters2, worldLayer);
     this.physics.add.collider(monsters2, monsters2);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -661,12 +664,29 @@ var powerlaser = new Phaser.Class({
         }
     }
     player.rotation = playerangle;
+  this.physics.add.overlap(lasers, monsters, killthings, null, this);
+  this.physics.add.overlap(lasers, monsters2, killthings, null, this);
+    this.physics.add.overlap(plasers, monsters, killthings, null, this);
+  this.physics.add.overlap(plasers, monsters2, killthings, null, this);
+    this.physics.add.overlap(mlasers, monsters, killthings, null, this);
+  this.physics.add.overlap(mlasers, monsters2, killthings, null, this);
+    this.physics.add.overlap(hlasers, monsters, killthings, null, this);
+  this.physics.add.overlap(hlasers, monsters2, killthings, null, this);
 }
-
+function killthings(laser,monster){
+    console.log("PEW PEW");
+    monster.x = Phaser.Math.Between(0, 3200);
+    monster.y = Phaser.Math.Between(0, 3200);
+    score+= 10;
+    console.log(score);
+    if(score > highscore){
+        highscore = score;
+    }
+}
 function update(time, delta) {
 if(playerhp <= 0) {
         playerhp == 0;
-        console.log("Oh no, you suck!");
+        console.log("FUCK YOU STEVE");
     }
     //player.rotation = game.physics.arcade.angleToPointer(player);
     //playerStats.onEnterframe();
